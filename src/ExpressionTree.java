@@ -74,7 +74,7 @@
 //        /* evaluate an Expression tree via postorder traversal. */
 //
 //        public double eval(SymbolTable table) {
-//
+//            return null;
 //        }
 //
 //
@@ -82,28 +82,68 @@
 //
 ///*parse variable identifiers */
 //    public static Node parseIdentifier(Token t) {
-//
+//        if (t == null){
+//            return new Node();
+//        } else if (t.type.equals(Lexer.IDENTIFER)) {
+//            return new Node(t);
+//        } else {
+//            throw new IllegalArgumentException("Parse error: " + t);
+//        }
 //    }
 //
 //    /* parse = */
 //    public static Node parseAssignmentOp(Token t) {
-//
+//        if (t == null){
+//            return new Node();
+//        } else if (t.type.equals(Lexer.ASSIGNMENT)) {
+//            return new Node(t);
+//        } else {
+//            throw new IllegalArgumentException("Parse error: " + t);
+//        }
 //    }
+//
 //    /* parse +,-,*,/ */
 //    public static Node parseOperator(Token t) {
-//
+//        if (t == null){
+//            return new Node();
+//        } else if (t.type.equals(Lexer.OPERATOR)) {
+//            return new Node(t);
+//        } else {
+//            throw new IllegalArgumentException("Parse error: " + t);
+//        }
 //    }
 //
 //    /* parse the expr (#) operator */
 //    public static Node parseExprOperator(Token t) {
+//        if (t == null){
+//            return new Node();
+//        } else if (t.type.equals(Lexer.EXPRASSIGNMENT)) {
+//            return new Node(t);
+//        } else {
+//            throw new IllegalArgumentException("Parse error: " + t);
+//        }
+//    }
 //
+//    public static Node parseNumber(Token t) {
+//        if (t == null){
+//            return new Node();
+//        } else if (t.type.equals(Lexer.FLOAT) || t.type.equals(Lexer.INT)){
+//            return new Node(t);
+//        } else {
+//            throw new IllegalArgumentException("Parse error: " + t);
+//        }
 //    }
 //
 //    /* parse a number or identifier and return the appropriate expression tree */
 //
 //    public static Node parseNumberOrIdentifier(Token t) {
-//
-//
+//        if (t == null){
+//            return new Node();
+//        } else if (t.type.equals(Lexer.FLOAT) || t.type.equals(Lexer.INT) || t.type.equals(Lexer.IDENTIFER)) {
+//            return new Node(t);
+//        } else {
+//            throw new IllegalArgumentException("Parse error: " + t);
+//        }
 //    }
 //
 //    /* a helper method to tell which of two operators has precendence. */
@@ -118,16 +158,42 @@
 //    /* parseExpression. Use the shunting algorithm to parse the list of tokens into an expression tree. */
 //
 //    public static Node parseExpression(List<Token> tokenList) {
-//
+//        Stack<Node> operators = new Stack<>();
+//        Stack<Node> operands = new Stack<>();
+//        for(Token t : tokenList) {
+//            if (t.type.equals(Lexer.FLOAT) || t.type.equals(Lexer.INT) || t.type.equals(Lexer.IDENTIFER)) {
+//                operands.push(parseNumberOrIdentifier(t));
+////                if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)){
+////                    operands.push(parseNumberOrIdentifier(t));
+////                } else {
+////                    operands.push(parseIdentifier(t));
+////                }
+//            } else {
+//                if (operators.isEmpty() || ExpressionTree.hasPrecedence(t.value, operators.peek().val)) {
+//                    if (t.value.equals(Lexer.OPERATOR)) {
+//                        operators.push(parseOperator(t));
+//                    } else {
+//                        throw new IllegalArgumentException("Cannot identify token type " + t);
+//                    }
+//                } else {
+//                    Node operand1 = operands.pop();
+//                    Node operand2 = operands.pop();
+//                    Node operator = operators.pop();
+//                    operator.left = operand2;
+//                    operator.right = operand1;
+//                    operands.push(operator);
+//                    operators.push(parseOperator(t));
+//                }
+//            }
+//        }
+//        return null;
 //    }
-//
-//
 //
 //    /* parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,
 //        evaluate it, and store the result in the symbol table.
 //     */
 //    public static Node parseAssignment(List<Token> tokenList, SymbolTable table) {
-//
+//        return null;
 //    }
 //
 //    /* Similar to parseAssignment, except that we're not going to evaluate the expression. Instead, store the expression tree
@@ -135,13 +201,13 @@
 //     */
 //
 //    public static Node parseExprAssignment(List<Token> tokenList, SymbolTable table) {
-//
+//        return null;
 //    }
 //
 //    /* take a list of tokens, look ahead to see what we are parsing, and call the appropriate method */
 //
 //    public static Node parseTokens(List<Token> tokenList, SymbolTable table) {
-//
+//        return null;
 //    }
 //
 //    /* wrapper method for parseTokens */

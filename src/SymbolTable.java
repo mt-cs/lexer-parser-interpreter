@@ -9,4 +9,19 @@
 //
 //    /* you add constructors and setters/getters. */
 //
+//    public Map<String, Double> getSymTable() {
+//        return symTable;
+//    }
+//
+//    public void setSymTable(Map<String, Double> inSymTable) {
+//        symTable = inSymTable;
+//    }
+//
+//    public Map<String, ExpressionTree> getFunctionTable() {
+//        return functionTable;
+//    }
+//
+//    public void setFunctionTable(Map<String, ExpressionTree> inFunctionTable) {
+//        functionTable = inFunctionTable;
+//    }
 //}

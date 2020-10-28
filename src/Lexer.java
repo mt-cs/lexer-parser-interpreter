@@ -65,17 +65,32 @@ public class Lexer {
      * @return t Token
      */
     public Token getNextToken(int ref) {
-        Token t;
-        t = getEOF(ref);
-        if (t != null) {
-            return t;
-        }
+        Token t = null;
+//        Character ch = buffer.charAt(ref);
+//        if (Character.isWhitespace(ch)){
+//            t = null;
+//        }
+//        else if (Character.isLetter(ch)){
+//            t = getIdentifier(ref);
+//        } else if (Character.isDigit(ch)){
+//            t = getNumber(ref);
+//        } else if (ch == '='){
+//            t = new Token(ASSIGNMENT, "=");
+//        } else if (ch == '#'){
+//            t = new Token(EXPRASSIGNMENT, "#");
+//        } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/'){
+//            t = getOperator(ch);
+//        } else if (ch == '\n'){
+//            t = new Token(EOFTOKEN, "");
+//        }
+//        return t;
+
         t = getOperator(ref);
         if (t != null) {
             return t;
         }
         t = getAssignment(ref);
-        if ( t != null) {
+        if (t != null) {
             return t;
         }
         t = getExpressionAssignment(ref);
@@ -86,7 +101,7 @@ public class Lexer {
         if (t != null) {
             return t;
         }
-        t = getNumber(ref); // where should I handle the exception float should the program stop running?
+        t = getNumber(ref);
         return t;
     }
 
@@ -95,15 +110,19 @@ public class Lexer {
      * @return allToken ArrayList
      */
     public List<Token> getAllTokens() {
-        ArrayList<Token> allToken = new ArrayList<>();
-        for(int index = 0; index < this.buffer.length() ; index++){
+
+        List<Token> allToken = new ArrayList<>();
+        int index = 0;
+        while (index < buffer.length()){
             Token token = getNextToken(index);
-            if(token != null){
-                index += token.length()-1;
+            if (token == null){
+                index++;
+            } else {
+                index += token.length();
                 allToken.add(token);
             }
         }
-        // allToken.add(new Token(EOFTOKEN, "EOF"));
+        allToken.add(new Token(EOFTOKEN, "eof"));
         return allToken;
     }
 
@@ -117,7 +136,6 @@ public class Lexer {
             buffer.charAt(ref) == '/'){
             return new Token(OPERATOR, Character.toString(buffer.charAt(ref)));
         } else {
-            System.out.println(buffer.charAt(ref));
             return null;
             // throw new IllegalArgumentException("Lexical error: " + buffer.charAt(ref));
         }
@@ -155,7 +173,7 @@ public class Lexer {
      * @return new Token if operator is found otherwise null
      */
     public Token getEOF(int ref){
-        if (buffer.charAt(ref) == '\n') {
+        if (buffer.charAt(ref) == '\n' || ref == buffer.length()) {
             return new Token(EOFTOKEN, "eof");
         } else {
             return null;
@@ -170,7 +188,7 @@ public class Lexer {
     public Token getIdentifier(int ref) {
         StringBuilder temp = new StringBuilder();
         if (Character.isLetter(buffer.charAt(ref))) {
-            while (Character.isLetterOrDigit(buffer.charAt(ref)) && ref < buffer.length()) {
+            while (ref < buffer.length() && Character.isLetterOrDigit(buffer.charAt(ref))) {
                 temp.append(buffer.charAt(ref));
                 ref++;
             }
@@ -190,15 +208,18 @@ public class Lexer {
         StringBuilder temp = new StringBuilder();
         int decimalCount = 0;
         if (Character.isDigit(buffer.charAt(ref))) {
-            while (ref < buffer.length() && Character.isDigit(buffer.charAt(ref)) || buffer.charAt(ref) == '.') {
+
+            while (ref < buffer.length() && Character.isDigit(buffer.charAt(ref)) || buffer.charAt(ref)=='.') {
                 temp.append(buffer.charAt(ref));
-                ref++;
                 if (buffer.charAt(ref) == '.') {
                     decimalCount++;
                 }
                 if (decimalCount > 1) {
                     throw new IllegalArgumentException("Lexical error: float value is invalid ");
                 }
+                ref++;
+                if(ref >= buffer.length())
+                    break;
             }
         } else {
             return null;
