@@ -10,7 +10,6 @@ public class Token {
     public Token(String t, String v) {
         this.type = t;
         this.value = v;
-
     }
 
     public int length() {
