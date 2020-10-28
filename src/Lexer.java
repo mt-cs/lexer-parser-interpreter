@@ -168,17 +168,17 @@ public class Lexer {
      * @return new Token if operator is found otherwise null
      */
     public Token getIdentifier(int ref) {
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         if (Character.isLetter(buffer.charAt(ref))) {
             while (Character.isLetterOrDigit(buffer.charAt(ref)) && ref < buffer.length()) {
-                temp += buffer.charAt(ref);
+                temp.append(buffer.charAt(ref));
                 ref++;
             }
         } else {
             return null;
             //throw new IllegalArgumentException("Lexical error: " + buffer.charAt(ref) + " doesn't start with a letter");
         }
-        return new Token(IDENTIFER, temp);
+        return new Token(IDENTIFER, temp.toString());
     }
 
     /**
@@ -187,11 +187,11 @@ public class Lexer {
      * @return new Token if operator is found otherwise null
      */
     public Token getNumber(int ref) {
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         int decimalCount = 0;
         if (Character.isDigit(buffer.charAt(ref))) {
             while (ref < buffer.length() && Character.isDigit(buffer.charAt(ref)) || buffer.charAt(ref) == '.') {
-                temp += buffer.charAt(ref);
+                temp.append(buffer.charAt(ref));
                 ref++;
                 if (buffer.charAt(ref) == '.') {
                     decimalCount++;
@@ -206,9 +206,9 @@ public class Lexer {
         }
 
         if (decimalCount == 1) {
-            return new Token(FLOAT, temp);
+            return new Token(FLOAT, temp.toString());
         } else {
-            return new Token(INT, temp);
+            return new Token(INT, temp.toString());
         }
     }
 }
