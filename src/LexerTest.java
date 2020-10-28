@@ -2,6 +2,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * jUnit test for lexer
+ */
 public class LexerTest {
     public Lexer luthor;
     Token t;

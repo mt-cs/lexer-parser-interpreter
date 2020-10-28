@@ -1,3 +1,6 @@
+/**
+ * Main function to test lexer
+ */
 
 import java.util.List;
 
