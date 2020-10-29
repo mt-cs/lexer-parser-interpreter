@@ -65,26 +65,7 @@ public class Lexer {
      * @return t Token
      */
     public Token getNextToken(int ref) {
-        Token t = null;
-//        Character ch = buffer.charAt(ref);
-//        if (Character.isWhitespace(ch)){
-//            t = null;
-//        }
-//        else if (Character.isLetter(ch)){
-//            t = getIdentifier(ref);
-//        } else if (Character.isDigit(ch)){
-//            t = getNumber(ref);
-//        } else if (ch == '='){
-//            t = new Token(ASSIGNMENT, "=");
-//        } else if (ch == '#'){
-//            t = new Token(EXPRASSIGNMENT, "#");
-//        } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/'){
-//            t = getOperator(ch);
-//        } else if (ch == '\n'){
-//            t = new Token(EOFTOKEN, "");
-//        }
-//        return t;
-
+        Token t;
         t = getOperator(ref);
         if (t != null) {
             return t;
@@ -162,19 +143,6 @@ public class Lexer {
     public Token getAssignment(int ref){
         if (buffer.charAt(ref) == '=') {
             return new Token(ASSIGNMENT, "=");
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Get end of file
-     * @param ref the current index in the string
-     * @return new Token if operator is found otherwise null
-     */
-    public Token getEOF(int ref){
-        if (buffer.charAt(ref) == '\n' || ref == buffer.length()) {
-            return new Token(EOFTOKEN, "eof");
         } else {
             return null;
         }

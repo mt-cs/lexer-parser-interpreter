@@ -64,14 +64,6 @@ public class LexerTest {
     }
 
     @Test
-    void getEOF(){
-        luthor.buffer = "X # 55\n";
-        t = luthor.getEOF(6);
-        //t = luthor.getEOF(luthor.buffer.length());
-        System.out.println(t);
-    }
-
-    @Test
     void getAssignment(){
         luthor.buffer = "X = 55";
         t = luthor.getAssignment(2);
