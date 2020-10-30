@@ -1,6 +1,4 @@
-import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.DeflaterOutputStream;
 
 public class SymbolTable {
 
@@ -9,19 +7,16 @@ public class SymbolTable {
 
     /* you add constructors and setters/getters. */
 
-    public Map<String, Double> getSymTable() {
-        return symTable;
-    }
+   public boolean has(String key) { return symTable.containsKey(key);}
 
-    public void setSymTable(Map<String, Double> inSymTable) {
-        symTable = inSymTable;
-    }
+   public Double getValue (String key){ return symTable.get(key);}
 
-    public Map<String, ExpressionTree> getFunctionTable() {
-        return functionTable;
-    }
+   public void storeValue(String key, Double value) { symTable.put(key, value);}
 
-    public void setFunctionTable(Map<String, ExpressionTree> inFunctionTable) {
-        functionTable = inFunctionTable;
-    }
+   public boolean hasFunction(String key) { return functionTable.containsKey(key);}
+
+   public ExpressionTree getFunction (String key){ return functionTable.get(key);}
+
+   public void storeFunction(String key, ExpressionTree value) { functionTable.put(key, value);}
+
 }
