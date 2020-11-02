@@ -78,6 +78,16 @@ class ExpressionTreeTest {
 
     @Test
     void parseAssignment() {
+        List<Token> tokenList = new ArrayList<>();
+        tokenList.add(new Token(Lexer.IDENTIFER, "X"));
+        tokenList.add(new Token(Lexer.ASSIGNMENT, "="));
+        tokenList.add(new Token(Lexer.FLOAT, "5.00"));
+        tokenList.add(new Token(Lexer.OPERATOR, "+"));
+        tokenList.add(new Token(Lexer.FLOAT, "5.00"));
+
+        SymbolTable st = new SymbolTable();
+        ExpressionTree.parseAssignment(tokenList, st);
+        System.out.println(st.getValue("X"));
     }
 
     @Test

@@ -88,7 +88,6 @@ public class ExpressionTree {
         }
 
         /* evaluate an Expression tree via postorder traversal. */
-
         public double eval(SymbolTable table) {
             if (this.type == Lexer.FLOAT || this.type == Lexer.INT){
                 return Double.valueOf(this.val);
@@ -215,11 +214,7 @@ public class ExpressionTree {
 
     /* a helper method to tell which of two operators has precendence. */
     public static boolean hasPrecedence(String op1, String op2) {
-        if (precedence.get(op1) > precedence.get(op2)) {
-            return true;
-        } else {
-            return false;
-        }
+        return precedence.get(op1) > precedence.get(op2);
     }
 
     /* parseExpression. Use the shunting algorithm to parse the list of tokens into an expression tree. */
@@ -247,8 +242,7 @@ public class ExpressionTree {
         while (!operators.isEmpty()) {
             Node operator = operators.pop();
             Node operand1 = operands.pop();
-            Node operand2 = operands.pop();
-            operator.left = operand2;
+            operator.left = operands.pop();
             operator.right = operand1;
             operands.push(operator);
         }
@@ -257,9 +251,24 @@ public class ExpressionTree {
 
     /* parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,
         evaluate it, and store the result in the symbol table.
+
+        READ ME:  Parse the identifier and assignment operator, parse the expression on the right-hand side,
+        evaluate it, and store the result in the Symbol Table.
+
+        Now we’re ready to do assignments.
+        We know that an assignment is an identifier, then an assignment operator, then an expression.
+        We grab and check the first two tokens, then parse the expression.
+        This is called lookahead parsing.
+        Evaluate the expression and store the result in the symbol tree.
      */
     public static Node parseAssignment(List<Token> tokenList, SymbolTable table) {
-        return null;
+        Node n;
+        parseIdentifier(tokenList.get(0));
+        parseAssignmentOp(tokenList.get(1));
+        n = parseExpression(tokenList.subList(2, tokenList.size()));
+        Double result = n.eval(table);
+        table.storeValue(tokenList.get(0).value, result);
+        return n;
     }
 
     /* Similar to parseAssignment, except that we're not going to evaluate the expression. Instead, store the expression tree
@@ -267,13 +276,19 @@ public class ExpressionTree {
      */
 
     public static Node parseExprAssignment(List<Token> tokenList, SymbolTable table) {
+//        Node n;
+//        parseIdentifier(tokenList.get(0));
+//        parseExprOperator(tokenList.get(1));
+//        ExpressionTree et = new ExpressionTree();
+//        n = parseExpression(tokenList.subList(2, tokenList.size()));
+//        table.storeFunction(tokenList.get(0).toString(), n);
         return null;
     }
 
     /* take a list of tokens, look ahead to see what we are parsing, and call the appropriate method */
 
     public static Node parseTokens(List<Token> tokenList, SymbolTable table) {
-        Node n = new Node();
+        Node n;
         if (tokenList.size() == 1) {
             if (tokenList.get(0).type.equals(Lexer.INT) || tokenList.get(0).type.equals(Lexer.FLOAT) ||
                     tokenList.get(0).type.equals(Lexer.IDENTIFER)) {
@@ -283,15 +298,15 @@ public class ExpressionTree {
             }
         } else if (tokenList.get(0).type.equals(Lexer.IDENTIFER) && tokenList.get(1).type.equals(Lexer.ASSIGNMENT)) {
             n = parseAssignment(tokenList, table);
-        } else if (tokenList.get(0).type.equals(Lexer.IDENTIFER) && tokenList.get(1).type.equals(Lexer.EXPRASSIGNMENT)){
-            n = parseExprAssignment(tokenList, table);
+//        } else if (tokenList.get(0).type.equals(Lexer.IDENTIFER) && tokenList.get(1).type.equals(Lexer.EXPRASSIGNMENT)){
+//            n = parseExprAssignment(tokenList, table);
         } else {
             n = parseExpression(tokenList);
         }
         if(n == null){
             System.out.println("Parse error");
         }
-        return n;
+;        return n;
     }
 
 
