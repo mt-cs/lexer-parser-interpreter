@@ -52,6 +52,9 @@ public class SymbolTable {
      */
     public void storeFunction(String key, ExpressionTree value) { functionTable.put(key, value);}
 
+    /**
+     * Override toString method
+     */
     @Override
     public String toString() {
         String s = "";
