@@ -386,17 +386,24 @@ public class ExpressionTree {
 ;        return n;
     }
 
-
-    /* wrapper method for parseTokens */
+    /**
+     * wrapper method for parseTokens
+     */
     public void parse(List<Token> tokenList, SymbolTable table) {
         root = parseTokens(tokenList, table);
     }
 
-    /* wrapper method for eval */
+    /**
+     * wrapper method for eval
+     */
     public double evaluate(SymbolTable table) {
         return root.eval(table);
     }
 
+    /**
+     * override toString method
+     * @return root
+     */
     @Override
     public String toString() {
         return "\nroot: " + root ;
