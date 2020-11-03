@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,20 +42,30 @@ public class Interpreter {
      * @param filename name of file
      */
     public void executeFile(String filename) {
-        Scanner sc = new Scanner(System.in);
-        List<Token> tokenList;
-        luthor.getInputFromFile(filename);
-        tokenList = luthor.getAllTokens();
-        ExpressionTree tree = new ExpressionTree();
-        tree.parse(tokenList, variables);
-        System.out.println(tree.evaluate(variables));
+        try {
+            Scanner scanner = new Scanner(new File(filename));
+            while (scanner.hasNextLine()) {
+                List<Token> tokenList;
+                luthor.getInputFromString(scanner.nextLine());
+                tokenList = luthor.getAllTokens();
+                ExpressionTree tree = new ExpressionTree();
+                tree.parse(tokenList, variables);
+
+                System.out.println("Input: " + luthor.buffer);
+                System.out.println("Output: " + tree.evaluate(variables) +"\n");
+                System.out.println("Symbol Table: " + variables.toString()  +"\n");
+                System.out.println("=======================================\n");
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main (String[] args) {
         Interpreter shell = new Interpreter();
         //shell.runShell();
-        String fileName = "test.txt";
+        String fileName = "test2.txt";
         shell.executeFile(fileName);
     }
-
 }

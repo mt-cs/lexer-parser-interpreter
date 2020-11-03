@@ -51,6 +51,16 @@ public class SymbolTable {
      * @param value Expression Tree
      */
     public void storeFunction(String key, ExpressionTree value) { functionTable.put(key, value);}
-//    public void storeFunction(String key, ExpressionTree.Node value) { functionTable.put(key, value);}
 
+    @Override
+    public String toString() {
+        String s = "";
+        if (!symTable.isEmpty()) {
+            s += symTable;
+        }
+        if (!functionTable.isEmpty()) {
+            s += "\n" + functionTable;
+        }
+        return s;
+    }
 }

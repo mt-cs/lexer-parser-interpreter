@@ -188,7 +188,6 @@ public class ExpressionTree {
         }
     }
 
-
     /**
      * parse variable identifiers
      * @param t token
@@ -398,4 +397,8 @@ public class ExpressionTree {
         return root.eval(table);
     }
 
+    @Override
+    public String toString() {
+        return "\nroot: " + root ;
+    }
 }
