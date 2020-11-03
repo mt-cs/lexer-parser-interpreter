@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-
+/**
+ * a binary tree in which the leaves are operands
+ * and the parent nodes are operators
+ */
 public class ExpressionTree {
-
     Node root;
     static HashMap<String, Integer> precedence;
     static {
@@ -32,30 +34,48 @@ public class ExpressionTree {
         precedence.put("*", 2);
         precedence.put("/", 2);
     }
-    // 5 + z * y + 7
 
+    /**
+     * empty constructor that set up root to be null
+     */
     public ExpressionTree() {
         root = null;
     }
 
+    /**
+     * constructor with three params:
+     * @param t token
+     * @param leftTree left tree
+     * @param rightTree right tree
+     */
     public ExpressionTree(Token t, ExpressionTree leftTree, ExpressionTree rightTree) {
         this.root = new Node(t);
         this.root.left = leftTree.root;
         this.root.right = rightTree.root;
     }
 
+    /**
+     * constructor with one parameter
+     * @param t token
+     */
     public ExpressionTree(Token t) {
         this.root = new Node(t);
         this.root.left = null;
         this.root.right = null;
     }
 
+    /**
+     * inner class Node
+     */
     public static class Node {
         String type;
         String val;
         Node left;
         Node right;
 
+        /**
+         * empty constructor
+         */
         Node() {
             type = "";
             val = "";
@@ -63,6 +83,13 @@ public class ExpressionTree {
             right = null;
         }
 
+        /**
+         * added constructor
+         * @param type lexer type
+         * @param val value
+         * @param left left node
+         * @param right right node
+         */
         public Node(String type, String val, Node left, Node right) {
             this.type = type;
             this.val = val;
@@ -70,12 +97,18 @@ public class ExpressionTree {
             this.right = right;
         }
 
+        /**
+         * Token type value
+         * @param t Token
+         */
         Node(Token t) {
             this.type = t.type;
             this.val = t.value;
         }
 
-
+        /**
+         * toString method
+         */
         public String toString() {
             String printTree = this.type + ":" + this.val ;
             if (this.left != null){
@@ -87,7 +120,11 @@ public class ExpressionTree {
             return printTree;
         }
 
-        /* evaluate an Expression tree via postorder traversal. */
+        /**
+         * evaluate an Expression tree via postorder traversal.
+         * @param table symbolTable
+         * @return leaf value or result of root evaluation
+         */
         public double eval(SymbolTable table) {
             if (this.type == Lexer.FLOAT || this.type == Lexer.INT){
                 return Double.valueOf(this.val);
@@ -97,7 +134,7 @@ public class ExpressionTree {
                 } else if (table.hasFunction(this.val)){
                     return table.getFunction(this.val).evaluate(table);
                 } else {
-                    throw new IllegalArgumentException(this.val + " not in symbol table");
+                    throw new IllegalArgumentException(this.val + " is not in symbol table");
                 }
             } else if (this.type ==  Lexer.OPERATOR) {
                 double lhs = left.eval(table);
@@ -111,7 +148,7 @@ public class ExpressionTree {
                 } else if (this.val.equals("*")) {
                     return lhs * rhs;
                 } else {
-                    System.out.println("Unknown operator");
+                    System.out.println("Unknown Operator");
                     return 0.0;
                 }
             } else {
@@ -119,6 +156,11 @@ public class ExpressionTree {
             }
         }
 
+        /**
+         * override equals method to do assert equals
+         * @param other object
+         * @return true if the trees are equal
+         */
         @Override
         public boolean equals(Object other){
             if (other instanceof Node){
@@ -139,7 +181,6 @@ public class ExpressionTree {
                 } else {
                     flag_right = this.right.equals(object.right);
                 }
-                // do error checking for null
                 return this.type.equals(object.type) && this.val.equals(object.val) && flag_left && flag_right;
             }  else {
                 return false;
@@ -147,7 +188,12 @@ public class ExpressionTree {
         }
     }
 
-/*parse variable identifiers */
+
+    /**
+     * parse variable identifiers
+     * @param t token
+     * @return new node for the token
+     */
     public static Node parseIdentifier(Token t) {
         if (t == null){
             return new Node();
@@ -158,7 +204,11 @@ public class ExpressionTree {
         }
     }
 
-    /* parse = */
+    /**
+     * parse =
+     * @param t token
+     * @return new node for the token
+     */
     public static Node parseAssignmentOp(Token t) {
         if (t == null){
             return new Node();
@@ -169,7 +219,11 @@ public class ExpressionTree {
         }
     }
 
-    /* parse +,-,*,/ */
+    /**
+     * parse +,-,*,/
+     * @param t token
+     * @return new node for the token
+     */
     public static Node parseOperator(Token t) {
         if (t == null){
             return new Node();
@@ -180,7 +234,11 @@ public class ExpressionTree {
         }
     }
 
-    /* parse the expr (#) operator */
+    /**
+     * parse the expr (#) operator
+     * @param t token
+     * @return new node for the token
+     */
     public static Node parseExprOperator(Token t) {
         if (t == null){
             return new Node();
@@ -191,6 +249,11 @@ public class ExpressionTree {
         }
     }
 
+    /**
+     * parse a number return the appropriate expression tree
+     * @param t Token
+     * @return new node for the token
+     */
     public static Node parseNumber(Token t) {
         if (t == null){
             return new Node();
@@ -201,7 +264,11 @@ public class ExpressionTree {
         }
     }
 
-    /* parse a number or identifier and return the appropriate expression tree */
+    /**
+     * parse a number or identifier and return the appropriate expression tree
+     * @param t Token
+     * @return new node for the token
+     */
     public static Node parseNumberOrIdentifier(Token t) {
         if (t == null){
             return new Node();
@@ -212,13 +279,21 @@ public class ExpressionTree {
         }
     }
 
-    /* a helper method to tell which of two operators has precendence. */
+    /**
+     * a helper method to tell which of two operators has precedence
+     * @param op1 String operation 1
+     * @param op2 String operation 2
+     * @return true if operation 1 > operation 2
+     */
     public static boolean hasPrecedence(String op1, String op2) {
         return precedence.get(op1) > precedence.get(op2);
     }
 
-    /* parseExpression. Use the shunting algorithm to parse the list of tokens into an expression tree. */
-
+    /**
+     * parseExpression. Use the shunting algorithm to parse the list of tokens into an expression tree.
+     * @param tokenList list of token
+     * @return expression tree
+     */
     public static Node parseExpression(List<Token> tokenList) {
         Stack<Node> operators = new Stack<>();
         Stack<Node> operands = new Stack<>();
@@ -229,28 +304,27 @@ public class ExpressionTree {
                 if (operators.isEmpty() || ExpressionTree.hasPrecedence(t.value, operators.peek().val)) {
                     operators.push(parseOperator(t));
                 } else {
-                    Node operand1 = operands.pop();
-                    Node operand2 = operands.pop();
-                    Node operator = operators.pop();
-                    operator.left = operand1;
-                    operator.right = operand2;
-                    operands.push(operator);
+                    Node leftOperand = operands.pop();
+                    Node rightOperand = operands.pop();
+                    Node treeOperator = operators.pop();
+                    treeOperator.left = leftOperand;
+                    treeOperator.right = rightOperand;
+                    operands.push(treeOperator);
                     operators.push(parseOperator(t));
                 }
             }
         }
         while (!operators.isEmpty()) {
             Node operator = operators.pop();
-            Node operand1 = operands.pop();
+            Node rightOperand = operands.pop();
             operator.left = operands.pop();
-            operator.right = operand1;
+            operator.right = rightOperand;
             operands.push(operator);
         }
         return operands.peek();
     }
 
-    /* parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,
-        evaluate it, and store the result in the symbol table.
+    /*
 
         READ ME:  Parse the identifier and assignment operator, parse the expression on the right-hand side,
         evaluate it, and store the result in the Symbol Table.
@@ -260,6 +334,14 @@ public class ExpressionTree {
         We grab and check the first two tokens, then parse the expression.
         This is called lookahead parsing.
         Evaluate the expression and store the result in the symbol tree.
+     */
+
+    /**
+     * parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,
+     * evaluate it, and store the result in the symbol table.
+     * @param tokenList list of token
+     * @param table symbol table
+     * @return node result of the parsing
      */
     public static Node parseAssignment(List<Token> tokenList, SymbolTable table) {
         Node n;
@@ -276,17 +358,21 @@ public class ExpressionTree {
      */
 
     public static Node parseExprAssignment(List<Token> tokenList, SymbolTable table) {
-//        Node n;
-//        parseIdentifier(tokenList.get(0));
-//        parseExprOperator(tokenList.get(1));
-//        ExpressionTree et = new ExpressionTree();
-//        n = parseExpression(tokenList.subList(2, tokenList.size()));
-//        table.storeFunction(tokenList.get(0).toString(), n);
+        Node n;
+        parseIdentifier(tokenList.get(0));
+        parseExprOperator(tokenList.get(1));
+        ExpressionTree et = new ExpressionTree();
+        n = parseExpression(tokenList.subList(2, tokenList.size()));
+        table.storeFunction(tokenList.get(0).toString(), et);
         return null;
     }
 
-    /* take a list of tokens, look ahead to see what we are parsing, and call the appropriate method */
-
+    /**
+     * take a list of tokens, look ahead to see what we are parsing, and call the appropriate method
+     * @param tokenList list of token
+     * @param table symbol table
+     * @return node n
+     */
     public static Node parseTokens(List<Token> tokenList, SymbolTable table) {
         Node n;
         if (tokenList.size() == 1) {

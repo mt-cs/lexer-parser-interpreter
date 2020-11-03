@@ -64,11 +64,11 @@ class ExpressionTreeTest {
     @Test
     void parseExpression() {
         List<Token> tokenList = new ArrayList<>();
-        // x + 55.00 * abc6 / 8.0 - 10 - 7.00
         tokenList.add(new Token(Lexer.IDENTIFER, "X"));
         tokenList.add(new Token(Lexer.OPERATOR, "+"));
         tokenList.add(new Token(Lexer.FLOAT, "55.00"));
-
+//        tokenList.add(new Token(Lexer.OPERATOR, "/"));
+//        tokenList.add(new Token(Lexer.IDENTIFER, "abc6"));
         ExpressionTree.Node result = ExpressionTree.parseExpression(tokenList);
         System.out.println(result);
         ExpressionTree.Node expectedResult = new ExpressionTree.Node(Lexer.OPERATOR, "+", new ExpressionTree.Node(Lexer.IDENTIFER, "X", null, null), new ExpressionTree.Node(Lexer.FLOAT, "55.00", null, null));
@@ -97,6 +97,7 @@ class ExpressionTreeTest {
     @Test
     void parseTokens() {
 
+
     }
 
     @Test
@@ -121,15 +122,16 @@ class ExpressionTreeTest {
         List<Token> tl = new LinkedList<>();
         Token t1 = new Token(Lexer.INT,"3");
         Token t2 = new Token(Lexer.OPERATOR,"*");
-        Token t3 = new Token(Lexer.FLOAT,"5");
-        Token t4 = new Token(Lexer.INT,"+");
-        Token t5 = new Token(Lexer.INT,"a123");
+        Token t3 = new Token(Lexer.FLOAT,"5.0");
+        Token t4 = new Token(Lexer.OPERATOR,"+");
+        Token t5 = new Token(Lexer.IDENTIFER,"a124");
         SymbolTable table = new SymbolTable();
         tl.add(t1);
         tl.add(t2);
         tl.add(t3);
         tl.add(t4);
         tl.add(t5);
+        table.storeValue("a124", 4.0);
         ExpressionTree t = new ExpressionTree();
         t.parse(tl, table);
         System.out.println(t.evaluate(table));
