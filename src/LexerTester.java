@@ -6,7 +6,7 @@ import java.util.List;
 
 public class LexerTester {
     public static void main(String[] args) {
-        String fileName="test.txt";
+        String fileName = "test.txt";
         Lexer lexer = new Lexer(fileName);
         System.out.println(lexer.buffer);
 

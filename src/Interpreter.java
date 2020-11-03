@@ -37,15 +37,23 @@ public class Interpreter {
     /**
      * a method that can read a series of lines in from a file, execute each one, and print out the result.
      * Also add a verbose option that prints out the input and symbol table.
-     * @param filename
+     * @param filename name of file
      */
     public void executeFile(String filename) {
-
+        Scanner sc = new Scanner(System.in);
+        List<Token> tokenList;
+        luthor.getInputFromFile(filename);
+        tokenList = luthor.getAllTokens();
+        ExpressionTree tree = new ExpressionTree();
+        tree.parse(tokenList, variables);
+        System.out.println(tree.evaluate(variables));
     }
 
     public static void main (String[] args) {
         Interpreter shell = new Interpreter();
-        shell.runShell();
+        //shell.runShell();
+        String fileName = "test.txt";
+        shell.executeFile(fileName);
     }
 
 }

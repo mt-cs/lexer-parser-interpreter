@@ -51,5 +51,6 @@ public class SymbolTable {
      * @param value Expression Tree
      */
     public void storeFunction(String key, ExpressionTree value) { functionTable.put(key, value);}
+//    public void storeFunction(String key, ExpressionTree.Node value) { functionTable.put(key, value);}
 
 }

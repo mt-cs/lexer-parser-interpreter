@@ -324,18 +324,6 @@ public class ExpressionTree {
         return operands.peek();
     }
 
-    /*
-
-        READ ME:  Parse the identifier and assignment operator, parse the expression on the right-hand side,
-        evaluate it, and store the result in the Symbol Table.
-
-        Now we’re ready to do assignments.
-        We know that an assignment is an identifier, then an assignment operator, then an expression.
-        We grab and check the first two tokens, then parse the expression.
-        This is called lookahead parsing.
-        Evaluate the expression and store the result in the symbol tree.
-     */
-
     /**
      * parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,
      * evaluate it, and store the result in the symbol table.
@@ -353,18 +341,22 @@ public class ExpressionTree {
         return n;
     }
 
-    /* Similar to parseAssignment, except that we're not going to evaluate the expression. Instead, store the expression tree
-        in the symbol table.
+    /**
+     * Similar to parseAssignment, except that we're not going to evaluate the expression. Instead, store the expression tree
+     * in the symbol table.
+     * @param tokenList list of token
+     * @param table symbol table
+     * @return node result of the parsing
      */
-
     public static Node parseExprAssignment(List<Token> tokenList, SymbolTable table) {
         Node n;
         parseIdentifier(tokenList.get(0));
         parseExprOperator(tokenList.get(1));
-        ExpressionTree et = new ExpressionTree();
         n = parseExpression(tokenList.subList(2, tokenList.size()));
-        table.storeFunction(tokenList.get(0).toString(), et);
-        return null;
+        ExpressionTree et = new ExpressionTree();
+        et.root = n;
+        table.storeFunction(tokenList.get(0).value, et);
+        return n;
     }
 
     /**
@@ -384,8 +376,8 @@ public class ExpressionTree {
             }
         } else if (tokenList.get(0).type.equals(Lexer.IDENTIFER) && tokenList.get(1).type.equals(Lexer.ASSIGNMENT)) {
             n = parseAssignment(tokenList, table);
-//        } else if (tokenList.get(0).type.equals(Lexer.IDENTIFER) && tokenList.get(1).type.equals(Lexer.EXPRASSIGNMENT)){
-//            n = parseExprAssignment(tokenList, table);
+        } else if (tokenList.get(0).type.equals(Lexer.IDENTIFER) && tokenList.get(1).type.equals(Lexer.EXPRASSIGNMENT)){
+            n = parseExprAssignment(tokenList, table);
         } else {
             n = parseExpression(tokenList);
         }

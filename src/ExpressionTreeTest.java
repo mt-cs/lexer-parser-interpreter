@@ -6,7 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * jUnit test for Expression Tree
+ */
 class ExpressionTreeTest {
     ExpressionTree et;
 
@@ -92,6 +94,15 @@ class ExpressionTreeTest {
 
     @Test
     void parseExprAssignment() {
+        List<Token> tokenList = new ArrayList<>();
+        tokenList.add(new Token(Lexer.IDENTIFER, "X"));
+        tokenList.add(new Token(Lexer.EXPRASSIGNMENT, "#"));
+        tokenList.add(new Token(Lexer.FLOAT, "5.00"));
+        tokenList.add(new Token(Lexer.OPERATOR, "+"));
+        tokenList.add(new Token(Lexer.FLOAT, "5.00"));
+        SymbolTable st = new SymbolTable();
+        ExpressionTree.parseExprAssignment(tokenList, st);
+
     }
 
     @Test
