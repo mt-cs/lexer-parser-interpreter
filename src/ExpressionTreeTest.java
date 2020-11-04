@@ -59,9 +59,6 @@ class ExpressionTreeTest {
         System.out.println(n);
     }
 
-    @Test
-    void hasPrecedence() {
-    }
 
     @Test
     void parseExpression() {
@@ -107,8 +104,19 @@ class ExpressionTreeTest {
 
     @Test
     void parseTokens() {
-
-
+        List<Token> tl = new LinkedList<>();
+        Token t1 = new Token(Lexer.IDENTIFER, "a123");
+        Token t2 = new Token(Lexer.ASSIGNMENT, "=");
+        Token t3 = new Token(Lexer.INT, "1234");
+        Token t4 = new Token(Lexer.OPERATOR, "-");
+        Token t5 = new Token(Lexer.FLOAT, "345.666");
+        SymbolTable table = new SymbolTable();
+        tl.add(t1);
+        tl.add(t2);
+        tl.add(t3);
+        tl.add(t4);
+        tl.add(t5);
+        ExpressionTree.Node n = ExpressionTree.parseTokens(tl, table);
     }
 
     @Test

@@ -64,8 +64,8 @@ public class Interpreter {
 
     public static void main (String[] args) {
         Interpreter shell = new Interpreter();
-        //shell.runShell();
-        String fileName = "test2.txt";
-        shell.executeFile(fileName);
+        shell.runShell();
+//        String fileName = "test2.txt";
+//        shell.executeFile(fileName);
     }
 }

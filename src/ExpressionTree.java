@@ -285,7 +285,7 @@ public class ExpressionTree {
      * @return true if operation 1 > operation 2
      */
     public static boolean hasPrecedence(String op1, String op2) {
-        return precedence.get(op1) > precedence.get(op2);
+        return precedence.get(op1) >= precedence.get(op2);
     }
 
     /**
@@ -303,13 +303,15 @@ public class ExpressionTree {
                 if (operators.isEmpty() || ExpressionTree.hasPrecedence(t.value, operators.peek().val)) {
                     operators.push(parseOperator(t));
                 } else {
-                    Node leftOperand = operands.pop();
-                    Node rightOperand = operands.pop();
-                    Node treeOperator = operators.pop();
-                    treeOperator.left = leftOperand;
-                    treeOperator.right = rightOperand;
-                    operands.push(treeOperator);
-                    operators.push(parseOperator(t));
+                    while (!operators.isEmpty()) {
+                        Node leftOperand = operands.pop();
+                        Node rightOperand = operands.pop();
+                        Node treeOperator = operators.pop();
+                        treeOperator.left = leftOperand;
+                        treeOperator.right = rightOperand;
+                        operands.push(treeOperator);
+                        operators.push(parseOperator(t));
+                    }
                 }
             }
         }

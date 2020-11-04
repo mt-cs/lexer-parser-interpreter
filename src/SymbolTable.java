@@ -6,7 +6,6 @@ import java.util.Map;
  *  It wraps hashMaps to do its work.
  */
 public class SymbolTable {
-
     Map<String, Double> symTable = new HashMap<>();
     Map<String, ExpressionTree> functionTable = new HashMap<>();
 
