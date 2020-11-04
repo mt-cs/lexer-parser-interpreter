@@ -126,9 +126,9 @@ public class ExpressionTree {
          * @return leaf value or result of root evaluation
          */
         public double eval(SymbolTable table) {
-            if (this.type == Lexer.FLOAT || this.type == Lexer.INT){
-                return Double.valueOf(this.val);
-            } else if (this.type == Lexer.IDENTIFER){
+            if (this.type == Lexer.FLOAT || this.type.equals(Lexer.INT)){
+                return Double.parseDouble(this.val);
+            } else if (this.type.equals(Lexer.IDENTIFER)){
                 if (table.has(this.val)){
                     return table.getValue(this.val);
                 } else if (table.hasFunction(this.val)){
@@ -136,20 +136,21 @@ public class ExpressionTree {
                 } else {
                     throw new IllegalArgumentException(this.val + " is not in symbol table");
                 }
-            } else if (this.type ==  Lexer.OPERATOR) {
+            } else if (this.type.equals(Lexer.OPERATOR)) {
                 double lhs = left.eval(table);
                 double rhs = right.eval(table);
-                if (this.val.equals("+")) {
-                    return lhs + rhs;
-                } else if (this.val.equals("-")) {
-                    return lhs - rhs;
-                } else if (this.val.equals("/")) {
-                    return lhs / rhs;
-                } else if (this.val.equals("*")) {
-                    return lhs * rhs;
-                } else {
-                    System.out.println("Unknown Operator");
-                    return 0.0;
+                switch (this.val) {
+                    case "+":
+                        return lhs + rhs;
+                    case "-":
+                        return lhs - rhs;
+                    case "/":
+                        return lhs / rhs;
+                    case "*":
+                        return lhs * rhs;
+                    default:
+                        System.out.println("Unknown Operator");
+                        return 0.0;
                 }
             } else {
                 throw new IllegalArgumentException("Evaluation error " + this.toString());
@@ -385,7 +386,7 @@ public class ExpressionTree {
         if(n == null){
             System.out.println("Parse error");
         }
-;        return n;
+        return n;
     }
 
     /**

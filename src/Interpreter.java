@@ -26,13 +26,27 @@ public class Interpreter {
     public void runShell() {
         Scanner sc = new Scanner(System.in);
         List<Token> tokenList;
+        System.out.println("Do you want to print out input, output, and symbol table while parsing? (y/n)");
+        String verbose = sc.nextLine();
+        System.out.println("Enter an expression or 'q' to exit");
         while(true) {
             System.out.println(">>");
-            luthor.getInputFromString(sc.nextLine());
+            String buffer = sc.nextLine();
+            if (buffer.equalsIgnoreCase("q")){
+                break;
+            }
+            luthor.getInputFromString(buffer);
             tokenList = luthor.getAllTokens();
             ExpressionTree tree = new ExpressionTree();
             tree.parse(tokenList, variables);
             System.out.println(tree.evaluate(variables));
+
+            if (verbose.equalsIgnoreCase("y")) {
+                System.out.println("\nInput: " + luthor.buffer);
+                System.out.println("Output: " + tree.evaluate(variables) + "\n");
+                System.out.println("Symbol Table: " + variables.toString() + "\n");
+                System.out.println("=======================================\n");
+            }
         }
     }
 
@@ -64,8 +78,18 @@ public class Interpreter {
 
     public static void main (String[] args) {
         Interpreter shell = new Interpreter();
-        shell.runShell();
-//        String fileName = "test2.txt";
-//        shell.executeFile(fileName);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter 'r' for run shell mode or 'e' to execute file: ");
+        String option = sc.nextLine();
+        if (option.equalsIgnoreCase("r")) {
+            shell.runShell();
+        } else if (option.equalsIgnoreCase("e")){
+            //        String fileName = "test2.txt";
+            System.out.print("Please enter a filename: ");
+            String fileName = sc.nextLine();
+            shell.executeFile(fileName);
+        } else {
+            throw new IllegalArgumentException("Invalid option, please try again");
+        }
     }
 }

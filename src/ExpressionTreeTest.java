@@ -99,7 +99,6 @@ class ExpressionTreeTest {
         tokenList.add(new Token(Lexer.FLOAT, "5.00"));
         SymbolTable st = new SymbolTable();
         ExpressionTree.parseExprAssignment(tokenList, st);
-
     }
 
     @Test

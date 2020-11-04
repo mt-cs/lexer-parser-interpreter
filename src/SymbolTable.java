@@ -61,7 +61,7 @@ public class SymbolTable {
             s += symTable;
         }
         if (!functionTable.isEmpty()) {
-            s += "\n" + functionTable;
+            s += "\nFunction Table:\n" + functionTable;
         }
         return s;
     }
