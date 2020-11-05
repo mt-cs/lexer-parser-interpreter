@@ -126,34 +126,36 @@ public class ExpressionTree {
          * @return leaf value or result of root evaluation
          */
         public double eval(SymbolTable table) {
-            if (this.type == Lexer.FLOAT || this.type.equals(Lexer.INT)){
-                return Double.parseDouble(this.val);
-            } else if (this.type.equals(Lexer.IDENTIFER)){
-                if (table.has(this.val)){
-                    return table.getValue(this.val);
-                } else if (table.hasFunction(this.val)){
-                    return table.getFunction(this.val).evaluate(table);
-                } else {
-                    throw new IllegalArgumentException(this.val + " is not in symbol table");
-                }
-            } else if (this.type.equals(Lexer.OPERATOR)) {
-                double lhs = left.eval(table);
-                double rhs = right.eval(table);
-                switch (this.val) {
-                    case "+":
-                        return lhs + rhs;
-                    case "-":
-                        return lhs - rhs;
-                    case "/":
-                        return lhs / rhs;
-                    case "*":
-                        return lhs * rhs;
-                    default:
-                        System.out.println("Unknown Operator");
-                        return 0.0;
-                }
-            } else {
-                throw new IllegalArgumentException("Evaluation error " + this.toString());
+            switch (this.type) {
+                case Lexer.FLOAT:
+                case Lexer.INT:
+                    return Double.parseDouble(this.val);
+                case Lexer.IDENTIFER:
+                    if (table.has(this.val)) {
+                        return table.getValue(this.val);
+                    } else if (table.hasFunction(this.val)) {
+                        return table.getFunction(this.val).evaluate(table);
+                    } else {
+                        throw new IllegalArgumentException(this.val + " is not in symbol table");
+                    }
+                case Lexer.OPERATOR:
+                    double lhs = left.eval(table);
+                    double rhs = right.eval(table);
+                    switch (this.val) {
+                        case "+":
+                            return lhs + rhs;
+                        case "-":
+                            return lhs - rhs;
+                        case "/":
+                            return lhs / rhs;
+                        case "*":
+                            return lhs * rhs;
+                        default:
+                            System.out.println("Unknown Operator");
+                            return 0.0;
+                    }
+                default:
+                    throw new IllegalArgumentException("Evaluation error " + this.toString());
             }
         }
 
@@ -301,9 +303,7 @@ public class ExpressionTree {
             if (t.type.equals(Lexer.FLOAT) || t.type.equals(Lexer.INT) || t.type.equals(Lexer.IDENTIFER)) {
                 operands.push(parseNumberOrIdentifier(t));
             } else if (t.type.equals(Lexer.OPERATOR)){
-                if (operators.isEmpty() || ExpressionTree.hasPrecedence(t.value, operators.peek().val)) {
-                    operators.push(parseOperator(t));
-                } else {
+                if (!operators.isEmpty() && !ExpressionTree.hasPrecedence(t.value, operators.peek().val)) {
                     while (!operators.isEmpty()) {
                         Node leftOperand = operands.pop();
                         Node rightOperand = operands.pop();
@@ -311,9 +311,9 @@ public class ExpressionTree {
                         treeOperator.left = leftOperand;
                         treeOperator.right = rightOperand;
                         operands.push(treeOperator);
-                        operators.push(parseOperator(t));
                     }
                 }
+                operators.push(parseOperator(t));
             }
         }
         while (!operators.isEmpty()) {
@@ -409,6 +409,6 @@ public class ExpressionTree {
      */
     @Override
     public String toString() {
-        return "\nroot: " + root ;
+        return "\nRoot: " + root ;
     }
 }

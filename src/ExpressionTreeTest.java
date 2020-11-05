@@ -56,9 +56,10 @@ class ExpressionTreeTest {
     void parseNumberOrIdentifier() {
         Token t1 = new Token(Lexer.FLOAT, "333.4");
         ExpressionTree.Node n = ExpressionTree.parseNumberOrIdentifier(t1);
+        ExpressionTree expected = new ExpressionTree(t1);
+        System.out.println(expected);
         System.out.println(n);
     }
-
 
     @Test
     void parseExpression() {
@@ -68,6 +69,10 @@ class ExpressionTreeTest {
         tokenList.add(new Token(Lexer.FLOAT, "55.00"));
 //        tokenList.add(new Token(Lexer.OPERATOR, "/"));
 //        tokenList.add(new Token(Lexer.IDENTIFER, "abc6"));
+//        tokenList.add(new Token(Lexer.OPERATOR, "-"));
+//        tokenList.add(new Token(Lexer.INT, "7"));
+//        tokenList.add(new Token(Lexer.OPERATOR, "-"));
+//        tokenList.add(new Token(Lexer.INT, "5"));
         ExpressionTree.Node result = ExpressionTree.parseExpression(tokenList);
         System.out.println(result);
         ExpressionTree.Node expectedResult = new ExpressionTree.Node(Lexer.OPERATOR, "+", new ExpressionTree.Node(Lexer.IDENTIFER, "X", null, null), new ExpressionTree.Node(Lexer.FLOAT, "55.00", null, null));
@@ -83,10 +88,10 @@ class ExpressionTreeTest {
         tokenList.add(new Token(Lexer.FLOAT, "5.00"));
         tokenList.add(new Token(Lexer.OPERATOR, "+"));
         tokenList.add(new Token(Lexer.FLOAT, "5.00"));
-
         SymbolTable st = new SymbolTable();
         ExpressionTree.parseAssignment(tokenList, st);
         System.out.println(st.getValue("X"));
+        System.out.println(st.toString());
     }
 
     @Test
@@ -99,6 +104,7 @@ class ExpressionTreeTest {
         tokenList.add(new Token(Lexer.FLOAT, "5.00"));
         SymbolTable st = new SymbolTable();
         ExpressionTree.parseExprAssignment(tokenList, st);
+        System.out.println(st.toString());
     }
 
     @Test
@@ -116,6 +122,7 @@ class ExpressionTreeTest {
         tl.add(t4);
         tl.add(t5);
         ExpressionTree.Node n = ExpressionTree.parseTokens(tl, table);
+        System.out.println(n);
     }
 
     @Test
@@ -132,7 +139,9 @@ class ExpressionTreeTest {
         tl.add(t3);
         tl.add(t4);
         tl.add(t5);
-        ExpressionTree.Node n = ExpressionTree.parseTokens(tl, table);
+        ExpressionTree et = new ExpressionTree();
+        et.parse(tl, table);
+        System.out.println(et.toString());
     }
 
     @Test
