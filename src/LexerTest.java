@@ -33,10 +33,10 @@ public class LexerTest {
 
     @Test
     void getOperator() {
-        luthor.buffer = "123+456";
-        t = luthor.getOperator(3);
+        luthor.buffer = "1^2*3";
+        t = luthor.getOperator(1);
         System.out.println(t);
-        t = luthor.getOperator(4);
+        t = luthor.getOperator(3);
         System.out.println(t);
     }
 

@@ -14,5 +14,6 @@ public class LexerTester {
         for( Token t : tokens){
             System.out.println(t.type +" : "+ t.value);
         }
+
     }
 }

@@ -33,6 +33,7 @@ public class ExpressionTree {
         precedence.put("-", 1);
         precedence.put("*", 2);
         precedence.put("/", 2);
+        precedence.put("^", 2);
     }
 
     /**
@@ -150,6 +151,8 @@ public class ExpressionTree {
                             return lhs / rhs;
                         case "*":
                             return lhs * rhs;
+                        case "^":
+                            return Math.pow(lhs, rhs);
                         default:
                             System.out.println("Unknown Operator");
                             return 0.0;
@@ -325,6 +328,7 @@ public class ExpressionTree {
         }
         return operands.peek();
     }
+
 
     /**
      * parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,

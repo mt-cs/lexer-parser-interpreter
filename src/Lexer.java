@@ -114,7 +114,7 @@ public class Lexer {
      */
     public Token getOperator(int ref) {
         if (buffer.charAt(ref) == '+' || buffer.charAt(ref) == '-' || buffer.charAt(ref) == '*' ||
-            buffer.charAt(ref) == '/'){
+            buffer.charAt(ref) == '/' || buffer.charAt(ref) == '^'){
             return new Token(OPERATOR, Character.toString(buffer.charAt(ref)));
         } else {
             return null;
