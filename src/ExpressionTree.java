@@ -155,7 +155,7 @@ public class ExpressionTree {
                             return Math.pow(lhs, rhs);
                         default:
                             System.out.println("Unknown Operator");
-                            return 0.0;
+                            return 0.0; // cb - probably better to throw an exception here.
                     }
                 default:
                     throw new IllegalArgumentException("Evaluation error " + this.toString());

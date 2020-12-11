@@ -1,0 +1,12 @@
+
+Lexer: 30/30
+
+Expression Tree: 29/30
+should throw an exception for unknown operator
+
+Interpreter: 30/30
+
+Expression Assignment: 10/10
+
+99/100 - nice work!
+
